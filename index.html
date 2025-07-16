@@ -32,7 +32,6 @@
             overscroll-behavior-y: contain;
         }
 
-        /* Splash Screen Styles */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -47,6 +46,7 @@
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
+            transition: opacity 0.8s ease-out;
         }
 
         .splash-content {
@@ -80,31 +80,11 @@
             color: var(--secondary-text);
         }
         
-        #enter-app-btn {
-            margin-top: 30px;
-            padding: 12px 30px;
-            border: none;
-            background-color: var(--accent-color);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            font-family: 'Tajawal', sans-serif;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        #enter-app-btn:hover {
-            background-color: var(--accent-dark);
-            transform: scale(1.05);
-        }
-
-        /* Main App Container - Initially Hidden */
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            display: none;
+            display: none; /* Initially hidden */
         }
 
         .header {
@@ -236,7 +216,6 @@
             <p>إيميل: metwallihammad@gmail.com</p>
             <h3>عن التطبيق</h3>
             <p>تطبيق بسيط لأذكار الصباح والمساء، يساعدك على قراءة الأذكار اليومية بسهولة مع عداد لكل ذكر.</p>
-            <button id="enter-app-btn">الدخول إلى التطبيق</button>
         </div>
     </div>
 
@@ -297,7 +276,6 @@
         let counters = {};
 
         const splashScreen = document.getElementById('splash-screen');
-        const enterAppBtn = document.getElementById('enter-app-btn');
         const mainContainer = document.querySelector('.container');
         const azkarContainer = document.getElementById('azkar-container');
         const azkarTitleEl = document.getElementById('azkar-title');
@@ -391,420 +369,15 @@
             }
         };
 
-        enterAppBtn.addEventListener('click', () => {
-            splashScreen.style.display = 'none';
-            mainContainer.style.display = 'block';
-            initializeApp();
-        });
-        
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => console.log('Service Worker registered'))
-                    .catch(err => console.error('Service Worker registration failed:', err));
-            });
-        }
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أذكار الصباح والمساء</title>
-    <meta name="theme-color" content="#1a735a"/>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="images/icon-192x192.png">
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@400;700&display=swap');
-
-        :root {
-            --bg-color: #f5f5f5;
-            --card-bg: #ffffff;
-            --primary-text: #2c3e50;
-            --secondary-text: #555;
-            --accent-color: #26a69a;
-            --accent-dark: #1a735a;
-            --completed-bg: #e0f2f1;
-            --completed-text: #a0a0a0;
-            --shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-text);
-            margin: 0;
-            padding: 0;
-            overscroll-behavior-y: contain;
-        }
-
-        /* Splash Screen Styles */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .splash-content {
-            background-color: var(--card-bg);
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .splash-content h2 {
-            color: var(--accent-dark);
-            font-family: 'Amiri Quran', serif;
-            font-size: 2.5rem;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        .splash-content h3 {
-            color: var(--primary-text);
-            margin-top: 25px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-        
-        .splash-content p {
-            margin: 5px 0;
-            line-height: 1.7;
-            color: var(--secondary-text);
-        }
-        
-        #enter-app-btn {
-            margin-top: 30px;
-            padding: 12px 30px;
-            border: none;
-            background-color: var(--accent-color);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            font-family: 'Tajawal', sans-serif;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        #enter-app-btn:hover {
-            background-color: var(--accent-dark);
-            transform: scale(1.05);
-        }
-
-        /* Main App Container - Initially Hidden */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            display: none;
-        }
-
-        .header {
-            text-align: center;
-            padding: 20px 0;
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            color: var(--accent-dark);
-            font-family: 'Amiri Quran', serif;
-            font-size: 2.5rem;
-            margin: 0;
-        }
-
-        .datetime {
-            color: var(--secondary-text);
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-        
-        #azkar-title {
-            text-align: center;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--primary-text);
-        }
-
-        .azkar-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .zikr-card {
-            background-color: var(--card-bg);
-            margin-bottom: 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            padding: 25px;
-            border-right: 5px solid var(--accent-color);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .zikr-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .zikr-card.completed {
-            background-color: var(--completed-bg);
-            border-right-color: var(--completed-text);
-            opacity: 0.7;
-            cursor: default;
-        }
-
-        .zikr-card.completed:hover {
-            transform: none;
-        }
-
-        .zikr-text {
-            font-family: 'Amiri Quran', serif;
-            font-size: 1.6rem;
-            line-height: 2.2;
-            margin-bottom: 20px;
-            text-align: justify;
-        }
-        
-        .zikr-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .zikr-counter {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            transition: background-color 0.3s;
-            user-select: none;
-        }
-        
-        .zikr-card.completed .zikr-counter {
-            background-color: var(--completed-text);
-            color: var(--card-bg);
-        }
-        
-        .zikr-info {
-            color: var(--accent-dark);
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-        
-        .scroll-to-top {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-    </style>
-</head>
-<body>
-
-    <div id="splash-screen">
-        <div class="splash-content">
-            <h2>المطور</h2>
-            <p>متولي شعبان</p>
-            <h3>للتواصل</h3>
-            <p>موبايل: 01097959017</p>
-            <p>إيميل: metwallihammad@gmail.com</p>
-            <h3>عن التطبيق</h3>
-            <p>تطبيق بسيط لأذكار الصباح والمساء، يساعدك على قراءة الأذكار اليومية بسهولة مع عداد لكل ذكر.</p>
-            <button id="enter-app-btn">الدخول إلى التطبيق</button>
-        </div>
-    </div>
-
-    <div class="container">
-        <header class="header">
-            <h1>أذكاري</h1>
-            <div class="datetime">
-                <span id="day"></span> | <span id="date"></span> | <span id="time"></span>
-            </div>
-        </header>
-        
-        <h2 id="azkar-title"></h2>
-
-        <div id="azkar-container" class="azkar-list"></div>
-    </div>
-    
-    <button class="scroll-to-top" id="scrollToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
-
-    <script>
-        const azkarSabah = [
-            { id: 1, text: "{اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالأَرْضَ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيم}", count: 1, info: "آية الكرسي" },
-            { id: 2, text: "{قُلْ هُوَ اللَّهُ أَحَدٌ*اللَّهُ الصَّمَدُ*لَمْ يَلِدْ وَلَمْ يُولَدْ*وَلَمْ يَكُن لَّهُ كُفُواً أَحَدٌ}", count: 3, info: "سورة الإخلاص" },
-            { id: 3, text: "{قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ*مِن شَرِّ مَا خَلَقَ*وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ*وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ*وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ}", count: 3, info: "سورة الفلق" },
-            { id: 4, text: "{قُلْ أَعُوذُ بِرَبِّ النَّاسِ*مَلِكِ النَّاسِ*إِلَهِ النَّاسِ*مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ*الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ*مِنَ الْجِنَّةِ وَالنَّاسِ}", count: 3, info: "سورة الناس" },
-            { id: 5, text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ", count: 1, info: "سيد الاستغفار" },
-            { id: 6, text: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ", count: 1, info: "" },
-            { id: 7, text: "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلاَّ أَنْتَ", count: 1, info: "" },
-            { id: 8, text: "اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتَكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لاَ إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسُولُكَ", count: 4, info: "" },
-            { id: 9, text: "اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ", count: 1, info: "" },
-            { id: 10, text: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ  إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ", count: 3, info: "" },
-            { id: 11, text: "حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ", count: 7, info: "" },
-            { id: 12, text: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي", count: 1, info: "" },
-            { id: 13, text: "اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَوَاتِ وَالأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي سُوءاً أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ", count: 1, info: "" },
-            { id: 14, text: "بِسْمِ اللَّهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الأَرْضِ وَلاَ فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", count: 3, info: "" },
-            { id: 15, text: "رَضِيتُ بِاللَّهِ رَبَّاً، وَبِالإِسْلاَمِ دِيناً، وَبِمُحَمَّدٍ صلى الله عليه وسلم نَبِيَّاً", count: 3, info: "" },
-            { id: 16, text: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ أَصْلِحْ لِي شَأْنِي كُلَّهُ وَلاَ تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ", count: 1, info: "" },
-            { id: 17, text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ رَبِّ الْعَالَمِينَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ: فَتْحَهُ، وَنَصْرَهُ، وَنُورَهُ، وَبَرَكَتَهُ، وَهُدَاهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ مَا بَعْدَهُ", count: 1, info: "" },
-            { id: 18, text: "أَصْبَحْنا عَلَى فِطْرَةِ الإسْلاَمِ، وَعَلَى كَلِمَةِ الإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صلى الله عليه وسلم، وَعَلَى مِلَّةِ أَبِينَا إبْرَاهِيمَ حَنِيفاً مُسْلِماً وَمَا كَانَ مِنَ الْمُشْرِكِينَ", count: 1, info: "" },
-            { id: 19, text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", count: 100, info: "" },
-            { id: 20, text: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", count: 10, info: "" },
-            { id: 21, text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ", count: 3, info: "" },
-            { id: 22, text: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْماً نَافِعاً، وَرِزْقاً طَيِّباً، وَعَمَلاً مُتَقَبَّلاً", count: 1, info: "" },
-            { id: 23, text: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", count: 100, info: "" },
-            { id: 24, text: "اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبَيِّنَا مُحَمَّدٍ", count: 10, info: "" }
-        ];
-
-        const azkarMasaa = JSON.parse(JSON.stringify(azkarSabah))
-            .map(zikr => {
-                zikr.text = zikr.text.replace(/أَصْبَحْنَا/g, 'أَمْسَيْنَا');
-                zikr.text = zikr.text.replace(/أَصْبَحَ/g, 'أَمْسَى');
-                zikr.text = zikr.text.replace(/هَذَا الْيَوْمِ/g, 'هَذِهِ اللَّيْلَةِ');
-                zikr.text = zikr.text.replace(/بَعْدَهُ/g, 'بَعْدَهَا');
-                zikr.text = zikr.text.replace(/النُّشُورُ/g, 'الْمَصِيرُ');
-                return zikr;
-            });
-        
-        let currentAzkar = [];
-        let counters = {};
-
-        const splashScreen = document.getElementById('splash-screen');
-        const enterAppBtn = document.getElementById('enter-app-btn');
-        const mainContainer = document.querySelector('.container');
-        const azkarContainer = document.getElementById('azkar-container');
-        const azkarTitleEl = document.getElementById('azkar-title');
-        const dayEl = document.getElementById('day');
-        const dateEl = document.getElementById('date');
-        const timeEl = document.getElementById('time');
-        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-
-        function updateDateTime() {
-            const now = new Date();
-            const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            
-            dayEl.textContent = now.toLocaleDateString('ar-EG', { weekday: 'long' });
-            dateEl.textContent = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
-            timeEl.textContent = now.toLocaleTimeString('ar-EG', optionsTime);
-        }
-
-        function displayAzkar(azkar, title) {
-            azkarTitleEl.textContent = title;
-            azkarContainer.innerHTML = '';
-            azkar.forEach((zikr, index) => {
-                counters[zikr.id] = zikr.count;
-
-                const card = document.createElement('div');
-                card.className = 'zikr-card';
-                card.id = `zikr-${zikr.id}`;
-                card.dataset.id = zikr.id;
-                card.dataset.total = zikr.count;
-
-                card.innerHTML = `
-                    <p class="zikr-text">${zikr.text}</p>
-                    <div class="zikr-meta">
-                        <span class="zikr-info">${zikr.info}</span>
-                        <div class="zikr-counter" id="counter-${zikr.id}">
-                            <span id="count-${zikr.id}">${counters[zikr.id]}</span> / ${zikr.count}
-                        </div>
-                    </div>
-                `;
-                
-                card.addEventListener('click', () => handleZikrClick(zikr.id));
-                azkarContainer.appendChild(card);
-            });
-        }
-
-        function handleZikrClick(id) {
-            const card = document.getElementById(`zikr-${id}`);
-            if (card.classList.contains('completed')) return;
-            
-            counters[id]--;
-            document.getElementById(`count-${id}`).textContent = counters[id];
-
-            if (counters[id] === 0) {
-                card.classList.add('completed');
-                const counterDiv = document.getElementById(`counter-${id}`);
-                counterDiv.innerHTML = '✓ تم';
-                
-                setTimeout(scrollToNext, 500);
-            }
-        }
-        
-        function scrollToNext() {
-            const allCards = document.querySelectorAll('.zikr-card');
-            for(let card of allCards) {
-                if (!card.classList.contains('completed')) {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    return;
-                }
-            }
-        }
-
-        function initializeApp() {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-
-            const hour = new Date().getHours();
-            if (hour >= 4 && hour < 14) {
-                currentAzkar = azkarSabah;
-                displayAzkar(azkarSabah, 'أذكار الصباح ☘️📿');
-            } else {
-                currentAzkar = azkarMasaa;
-                displayAzkar(azkarMasaa, 'أذكار المساء 🌙📿');
-            }
-        }
-        
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                scrollToTopBtn.style.display = "flex";
-            } else {
-                scrollToTopBtn.style.display = "none";
-            }
-        };
-
-        enterAppBtn.addEventListener('click', () => {
-            splashScreen.style.display = 'none';
-            mainContainer.style.display = 'block';
-            initializeApp();
-        });
+        // Auto-enter after 5 seconds
+        setTimeout(() => {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                mainContainer.style.display = 'block';
+                initializeApp();
+            }, 800); // Wait for fade out animation
+        }, 5000); // 5000 milliseconds = 5 seconds
         
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
